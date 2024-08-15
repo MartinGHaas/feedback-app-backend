@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class ItemController {
     public ResponseEntity<ItemSearchResponseDTO> createItem(
             @PathVariable @NonNull String name
     ) {
-        Item item = itemRepository.findByName(name);
+        Item item = itemRepository.findByName(name)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(item == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
