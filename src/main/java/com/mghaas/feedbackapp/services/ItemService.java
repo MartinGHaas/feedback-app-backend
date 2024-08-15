@@ -16,20 +16,22 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final FeedBackService feedBackService;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, FeedBackService feedBackService) {
         this.itemRepository = itemRepository;
+        this.feedBackService = feedBackService;
     }
 
     public ItemSearchResponseDTO createResponse(Item item)
             throws ResponseStatusException {
-
         var feedbacks = this.getFeedbackList(item);
 
         return new ItemSearchResponseDTO(
                 item.getId(),
                 item.getName(),
-                feedbacks
+                feedbacks,
+                feedBackService.getAverageRating(item.getFeedBacks())
         );
     }
 

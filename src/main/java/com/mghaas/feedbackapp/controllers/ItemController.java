@@ -28,7 +28,6 @@ public class ItemController {
     public ResponseEntity<ItemSearchResponseDTO> getItem(
             @PathVariable @NonNull String name
     ) {
-
         var item = itemService.findItemByName(name);
         return ResponseEntity.ok(itemService.createResponse(item));
     }

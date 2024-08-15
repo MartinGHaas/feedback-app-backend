@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class FeedBackService {
 
@@ -30,5 +32,12 @@ public class FeedBackService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         feedBackRepository.save(new FeedBack(comment, rating, item));
+    }
+
+    public float getAverageRating(List<FeedBack> feedbacks) {
+        return (float) feedbacks.stream()
+                .mapToDouble(FeedBack::getRating)
+                .average()
+                .orElse(0.0);
     }
 }
